@@ -1,0 +1,32 @@
+{
+  "name": "design-system",
+  "private": true,
+  "scripts": {
+    "storybook": "pnpm build:tokens && storybook dev -p 6006",
+    "build-storybook": "pnpm build:tokens && storybook build",
+    "build:tokens": "pnpm --filter @ds/tokens build",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "sync-figma": "node scripts/sync-figma-tokens.mjs && pnpm build:tokens",
+    "setup-figma": "node scripts/setup-figma-variables.mjs",
+    "typecheck": "turbo typecheck"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@bundled-es-modules/glob",
+      "esbuild",
+      "style-dictionary"
+    ]
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.0",
+    "@storybook/addon-essentials": "^8.6.0",
+    "@storybook/addon-interactions": "^8.6.0",
+    "@storybook/react": "^8.6.0",
+    "@storybook/react-vite": "^8.6.0",
+    "@storybook/test": "^8.6.0",
+    "storybook": "^8.6.0",
+    "turbo": "^2.3.0",
+    "vite": "^6.0.0"
+  }
+}

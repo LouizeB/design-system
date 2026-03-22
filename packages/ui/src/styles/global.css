@@ -1,0 +1,33 @@
+/*
+  Reset global do design system.
+
+  IMPORTANTE: não importa tokens aqui.
+  Tokens são carregados separadamente por marca:
+    @import '@ds/tokens/base'      ← primitivos (sempre)
+    @import '@ds/tokens/brand-a'   ← semânticos da marca escolhida
+
+  Em Next.js (app/layout.tsx):
+    import '@ds/tokens/base'
+    import '@ds/tokens/brand-a'   ← ou brand-b, dependendo do contexto
+    import '@ds/ui/src/styles/global.css'
+
+  Trocar de marca em runtime:
+    document.documentElement.dataset.brand = 'brand-b'
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-md);
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-background-default);
+  line-height: var(--ds-font-line-height-normal);
+  -webkit-font-smoothing: antialiased;
+}
