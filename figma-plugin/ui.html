@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      background: #1e1e1e;
+      color: #ffffff;
+      padding: 24px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .description {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.6;
+    }
+
+    .collections {
+      display: flex;
+      gap: 10px;
+    }
+
+    .badge {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 11px;
+      flex: 1;
+    }
+
+    .badge strong {
+      display: block;
+      font-size: 12px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .badge span {
+      color: #888;
+    }
+
+    button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    button:hover:not(:disabled) { background: #4f46e5; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #status {
+      font-size: 12px;
+      color: #888;
+      min-height: 18px;
+      text-align: center;
+    }
+
+    #status.success { color: #22c55e; }
+    #status.error   { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <h2>🎨 Design System Variables</h2>
+
+  <p class="description">
+    Cria automaticamente as Variable Collections no Figma a partir dos tokens do design system.
+  </p>
+
+  <div class="collections">
+    <div class="badge">
+      <strong>Primitives</strong>
+      <span>26 cores base<br>(neutral, indigo, rose…)</span>
+    </div>
+    <div class="badge">
+      <strong>Semantic</strong>
+      <span>16 tokens · 2 modos<br>Brand A &amp; Brand B</span>
+    </div>
+  </div>
+
+  <button id="btn" onclick="run()">Criar Variables no Figma</button>
+
+  <div id="status"></div>
+
+  <script>
+    function run() {
+      document.getElementById('status').textContent = 'Iniciando...';
+      document.getElementById('status').className = '';
+      document.getElementById('btn').disabled = true;
+      parent.postMessage({ pluginMessage: { type: 'create-variables' } }, '*');
+    }
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+      const statusEl = document.getElementById('status');
+
+      if (msg.type === 'status') {
+        statusEl.textContent = msg.text;
+        statusEl.className = '';
+      } else if (msg.type === 'success') {
+        statusEl.textContent = msg.text;
+        statusEl.className = 'success';
+      } else if (msg.type === 'error') {
+        statusEl.textContent = msg.text;
+        statusEl.className = 'error';
+        document.getElementById('btn').disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>
