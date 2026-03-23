@@ -1,121 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Inter, -apple-system, sans-serif;
-      background: #1e1e1e;
-      color: #fff;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      height: 420px;
-    }
-    h2 { font-size: 15px; font-weight: 600; }
-    .subtitle { font-size: 12px; color: #888; line-height: 1.5; }
-    .components {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .component-card {
-      background: #2a2a2a;
-      border: 1px solid #3a3a3a;
-      border-radius: 8px;
-      padding: 12px;
-    }
-    .component-card strong {
-      font-size: 12px;
-      color: #fff;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .component-card span {
-      font-size: 11px;
-      color: #666;
-      line-height: 1.4;
-    }
-    button {
-      background: #6366f1;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      width: 100%;
-      transition: background 0.15s;
-      margin-top: auto;
-    }
-    button:hover:not(:disabled) { background: #4f46e5; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    #status {
-      font-size: 12px;
-      color: #888;
-      text-align: center;
-      min-height: 18px;
-    }
-    #status.success { color: #22c55e; }
-    #status.error   { color: #ef4444; }
-  </style>
+<meta charset="utf-8"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, -apple-system, sans-serif; background: #1a1a1a; color: #fff; padding: 20px; height: 620px; display: flex; flex-direction: column; gap: 14px; }
+h2 { font-size: 15px; font-weight: 600; }
+.sub { font-size: 11px; color: #666; }
+.sub a { color: #818cf8; text-decoration: none; }
+.categories { display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y: auto; }
+.cat-header { font-size: 10px; font-weight: 600; color: #555; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.item { background: #252525; border: 1px solid #333; border-radius: 6px; padding: 8px 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.1s; }
+.item:hover { border-color: #555; }
+.item.selected { background: #1e1b4b; border-color: #6366f1; }
+.item input[type=checkbox] { accent-color: #6366f1; width: 14px; height: 14px; cursor: pointer; }
+.item label { font-size: 11px; cursor: pointer; flex: 1; }
+.item.selected label { color: #a5b4fc; }
+.actions { display: flex; gap: 8px; }
+.btn { border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; padding: 10px 16px; flex: 1; }
+.btn-primary { background: #6366f1; color: white; }
+.btn-primary:hover { background: #4f46e5; }
+.btn-secondary { background: #252525; color: #aaa; border: 1px solid #333; }
+.btn-secondary:hover { background: #2a2a2a; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+#status { font-size: 11px; color: #666; text-align: center; min-height: 16px; }
+#status.success { color: #22c55e; }
+#status.error { color: #ef4444; }
+.progress-bar { height: 2px; background: #252525; border-radius: 1px; overflow: hidden; }
+.progress-fill { height: 100%; background: #6366f1; border-radius: 1px; transition: width 0.2s; width: 0%; }
+</style>
 </head>
 <body>
-  <h2>🧩 DS Components Creator</h2>
-  <p class="subtitle">
-    Cria os 4 componentes no canvas usando as Variables do Design System.
-  </p>
+<div>
+  <h2>🧩 DS Super Generator</h2>
+  <p class="sub">Baseado em <a href="https://m3.material.io/components" target="_blank">Material Design 3</a> · 17 componentes</p>
+</div>
 
-  <div class="components">
-    <div class="component-card">
-      <strong>Input / TextField</strong>
-      <span>4 estados: Default, Focus, Error, Disabled</span>
-    </div>
-    <div class="component-card">
-      <strong>Badge</strong>
-      <span>6 tipos: Default, Primary, Success, Warning, Error, Info</span>
-    </div>
-    <div class="component-card">
-      <strong>Card</strong>
-      <span>Com título, corpo, divider e ação</span>
-    </div>
-    <div class="component-card">
-      <strong>Typography Scale</strong>
-      <span>H1→H4, Body L/M/S, Label M/S</span>
+<div class="categories">
+  <div>
+    <div class="cat-header">⚡ Actions</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'button')"><input type="checkbox" id="button" checked><label for="button">Button</label></div>
+      <div class="item selected" onclick="toggle(this,'fab')"><input type="checkbox" id="fab" checked><label for="fab">FAB</label></div>
     </div>
   </div>
+  <div>
+    <div class="cat-header">📝 Inputs</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'textfield')"><input type="checkbox" id="textfield" checked><label for="textfield">Text Field</label></div>
+      <div class="item selected" onclick="toggle(this,'checkbox')"><input type="checkbox" id="checkbox" checked><label for="checkbox">Checkbox</label></div>
+      <div class="item selected" onclick="toggle(this,'radio')"><input type="checkbox" id="radio" checked><label for="radio">Radio</label></div>
+      <div class="item selected" onclick="toggle(this,'switch_')"><input type="checkbox" id="switch_" checked><label for="switch_">Switch</label></div>
+    </div>
+  </div>
+  <div>
+    <div class="cat-header">🏷️ Selection</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'chip')"><input type="checkbox" id="chip" checked><label for="chip">Chip</label></div>
+    </div>
+  </div>
+  <div>
+    <div class="cat-header">📦 Containment</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'card')"><input type="checkbox" id="card" checked><label for="card">Card</label></div>
+      <div class="item selected" onclick="toggle(this,'divider')"><input type="checkbox" id="divider" checked><label for="divider">Divider</label></div>
+    </div>
+  </div>
+  <div>
+    <div class="cat-header">📢 Communication</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'badge')"><input type="checkbox" id="badge" checked><label for="badge">Badge</label></div>
+      <div class="item selected" onclick="toggle(this,'avatar')"><input type="checkbox" id="avatar" checked><label for="avatar">Avatar</label></div>
+      <div class="item selected" onclick="toggle(this,'progress')"><input type="checkbox" id="progress" checked><label for="progress">Progress</label></div>
+      <div class="item selected" onclick="toggle(this,'snackbar')"><input type="checkbox" id="snackbar" checked><label for="snackbar">Snackbar</label></div>
+      <div class="item selected" onclick="toggle(this,'tooltip')"><input type="checkbox" id="tooltip" checked><label for="tooltip">Tooltip</label></div>
+    </div>
+  </div>
+  <div>
+    <div class="cat-header">🧭 Navigation</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'tabs')"><input type="checkbox" id="tabs" checked><label for="tabs">Tabs</label></div>
+      <div class="item selected" onclick="toggle(this,'navbar')"><input type="checkbox" id="navbar" checked><label for="navbar">Nav Bar</label></div>
+    </div>
+  </div>
+  <div>
+    <div class="cat-header">🔤 Foundation</div>
+    <div class="grid">
+      <div class="item selected" onclick="toggle(this,'typography')"><input type="checkbox" id="typography" checked><label for="typography">Typography</label></div>
+    </div>
+  </div>
+</div>
 
-  <div id="status"></div>
+<div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+<div id="status">17 componentes selecionados</div>
 
-  <button id="btn" onclick="run()">Criar Componentes no Figma</button>
+<div class="actions">
+  <button class="btn btn-secondary" onclick="toggleAll()">Alternar todos</button>
+  <button class="btn btn-primary" id="btn" onclick="generate()">Gerar no Figma ✨</button>
+</div>
 
-  <script>
-    function run() {
-      document.getElementById('status').textContent = 'Iniciando...';
-      document.getElementById('status').className = '';
-      document.getElementById('btn').disabled = true;
-      parent.postMessage({ pluginMessage: { type: 'create-all' } }, '*');
-    }
+<script>
+const ALL = ['button','fab','textfield','checkbox','radio','switch_','chip','card','divider','badge','avatar','progress','snackbar','tooltip','tabs','navbar','typography'];
 
-    window.onmessage = (event) => {
-      const msg = event.data.pluginMessage;
-      if (!msg) return;
-      const el = document.getElementById('status');
-      if (msg.type === 'status') {
-        el.textContent = msg.text;
-        el.className = '';
-      } else if (msg.type === 'success') {
-        el.textContent = msg.text;
-        el.className = 'success';
-      } else if (msg.type === 'error') {
-        el.textContent = msg.text;
-        el.className = 'error';
-        document.getElementById('btn').disabled = false;
-      }
-    };
-  </script>
+function toggle(el, id) {
+  el.classList.toggle('selected');
+  document.getElementById(id).checked = el.classList.contains('selected');
+  updateCount();
+}
+function toggleAll() {
+  const allSelected = ALL.every(id => document.getElementById(id).checked);
+  ALL.forEach(id => {
+    const cb = document.getElementById(id);
+    cb.checked = !allSelected;
+    cb.closest('.item').classList.toggle('selected', !allSelected);
+  });
+  updateCount();
+}
+function updateCount() {
+  const n = ALL.filter(id => document.getElementById(id).checked).length;
+  document.getElementById('status').textContent = n + ' componente' + (n !== 1 ? 's' : '') + ' selecionado' + (n !== 1 ? 's' : '');
+  document.getElementById('status').className = '';
+}
+function generate() {
+  const selected = ALL.filter(id => document.getElementById(id).checked);
+  if (!selected.length) { document.getElementById('status').textContent = 'Selecione ao menos 1 componente'; return; }
+  document.getElementById('btn').disabled = true;
+  parent.postMessage({ pluginMessage: { type: 'generate', components: selected } }, '*');
+}
+window.onmessage = (e) => {
+  const msg = e.data.pluginMessage; if (!msg) return;
+  const st = document.getElementById('status');
+  if (msg.type === 'progress') {
+    const pct = (msg.current / msg.total * 100).toFixed(0);
+    document.getElementById('bar').style.width = pct + '%';
+    st.textContent = `⏳ ${msg.label} (${msg.current}/${msg.total})`;
+    st.className = '';
+  } else if (msg.type === 'status') {
+    st.textContent = msg.text; st.className = '';
+  } else if (msg.type === 'success') {
+    st.textContent = msg.text; st.className = 'success';
+    document.getElementById('bar').style.width = '100%';
+  } else if (msg.type === 'error') {
+    st.textContent = msg.text; st.className = 'error';
+    document.getElementById('btn').disabled = false;
+  }
+};
+</script>
 </body>
 </html>
