@@ -1,0 +1,41 @@
+/*
+  Card — usa tokens semânticos + component tokens.
+  Composto por Card, CardHeader, CardBody, CardFooter.
+*/
+
+.card {
+  border: var(--ds-component-card-border-width) solid var(--ds-color-border-default);
+  border-radius: var(--ds-component-card-border-radius);
+  background: var(--ds-color-background-default);
+  overflow: hidden;
+}
+
+.elevated {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.header {
+  padding: var(--ds-component-card-padding);
+  border-bottom: var(--ds-component-card-border-width) solid var(--ds-color-border-default);
+  font-family: var(--ds-font-family-sans);
+  font-weight: var(--ds-font-weight-semibold);
+  font-size: var(--ds-font-size-lg);
+  color: var(--ds-color-text-primary);
+}
+
+.body {
+  padding: var(--ds-component-card-padding);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-md);
+  color: var(--ds-color-text-primary);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.footer {
+  padding: var(--ds-component-card-padding);
+  border-top: var(--ds-component-card-border-width) solid var(--ds-color-border-default);
+  display: flex;
+  gap: var(--ds-component-card-gap);
+  align-items: center;
+  justify-content: flex-end;
+}

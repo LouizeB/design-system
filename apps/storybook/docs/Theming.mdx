@@ -1,0 +1,111 @@
+{/* apps/storybook/docs/Theming.mdx */}
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Theming" />
+
+# Multi-Brand Theming
+
+O Design System suporta múltiplas marcas com **troca em runtime** sem recarregar a página.
+
+## Como funciona
+
+1. **Primitivos** são iguais para todas as marcas (`:root`)
+2. **Tokens semânticos** são sobrescritos por marca via `[data-brand]`
+3. Componentes usam apenas tokens semânticos → mudança automática
+
+```
+:root                        → primitivos (sempre presentes)
+:root, [data-brand="brand-a"] → semânticos indigo (default)
+[data-brand="brand-b"]        → semânticos rose (override)
+```
+
+## Marcas disponíveis
+
+### Brand A — Indigo
+| Token | Valor |
+|-------|-------|
+| action-primary | `#6366f1` (Indigo 500) |
+| action-primary-hover | `#4f46e5` (Indigo 600) |
+| action-primary-subtle | `#eef2ff` (Indigo 50) |
+
+### Brand B — Rose
+| Token | Valor |
+|-------|-------|
+| action-primary | `#f43f5e` (Rose 500) |
+| action-primary-hover | `#e11d48` (Rose 600) |
+| action-primary-subtle | `#fff1f2` (Rose 50) |
+
+## ThemeProvider
+
+O pacote `@ds/themes` oferece um provider React para gerenciar a marca:
+
+```tsx
+import { ThemeProvider, useTheme } from '@ds/themes'
+
+// Envolva sua app com ThemeProvider
+function App() {
+  return (
+    <ThemeProvider defaultBrand="brand-a" persist>
+      <MyApp />
+    </ThemeProvider>
+  )
+}
+```
+
+### Props do ThemeProvider
+
+| Prop | Tipo | Default | Descrição |
+|------|------|---------|-----------|
+| `defaultBrand` | `'brand-a' \| 'brand-b'` | `'brand-a'` | Marca inicial |
+| `persist` | `boolean` | `true` | Salva escolha no localStorage |
+| `storageKey` | `string` | `'ds-brand'` | Chave do localStorage |
+
+### Hook useTheme
+
+```tsx
+function BrandSwitcher() {
+  const { brand, setBrand, toggleBrand } = useTheme()
+
+  return (
+    <div>
+      <p>Marca atual: {brand}</p>
+      <button onClick={toggleBrand}>Alternar marca</button>
+      <button onClick={() => setBrand('brand-a')}>Brand A</button>
+      <button onClick={() => setBrand('brand-b')}>Brand B</button>
+    </div>
+  )
+}
+```
+
+## Adicionando uma nova marca
+
+1. Crie `packages/tokens/src/brands/brand-c/tokens.json`
+2. Mapeie tokens semânticos para as cores da nova marca
+3. Atualize o tipo `Brand` em `packages/themes/src/ThemeProvider.tsx`
+4. Rode `pnpm build:tokens` para gerar o CSS
+
+```json
+{
+  "color": {
+    "action": {
+      "primary": { "$value": "{color.green.500}", "$type": "color" }
+    }
+  }
+}
+```
+
+## Uso sem React
+
+Não precisa do ThemeProvider. Basta importar os CSS e setar o atributo:
+
+```html
+<link rel="stylesheet" href="base.css" />
+<link rel="stylesheet" href="brand-a.css" />
+<link rel="stylesheet" href="brand-b.css" />
+
+<html data-brand="brand-b">
+```
+
+```js
+document.documentElement.dataset.brand = 'brand-b'
+```

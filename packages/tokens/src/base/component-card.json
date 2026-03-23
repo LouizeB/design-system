@@ -1,0 +1,10 @@
+{
+  "component": {
+    "card": {
+      "border-radius": { "$value": "{radius.lg}", "$type": "dimension" },
+      "border-width": { "$value": "1px", "$type": "dimension" },
+      "padding": { "$value": "{spacing.6}", "$type": "dimension" },
+      "gap": { "$value": "{spacing.4}", "$type": "dimension" }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "component": {
+    "input": {
+      "border-radius": { "$value": "{radius.md}", "$type": "dimension" },
+      "border-width": { "$value": "1.5px", "$type": "dimension" },
+      "font-family": { "$value": "{font.family.sans}", "$type": "fontFamily" },
+      "font-weight": { "$value": "{font.weight.regular}", "$type": "fontWeight" },
+      "transition-duration": { "$value": "150ms", "$type": "duration" },
+      "sm": {
+        "height": { "$value": "32px", "$type": "dimension" },
+        "padding-x": { "$value": "{spacing.3}", "$type": "dimension" },
+        "font-size": { "$value": "{font.size.sm}", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "40px", "$type": "dimension" },
+        "padding-x": { "$value": "{spacing.4}", "$type": "dimension" },
+        "font-size": { "$value": "{font.size.md}", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "48px", "$type": "dimension" },
+        "padding-x": { "$value": "{spacing.5}", "$type": "dimension" },
+        "font-size": { "$value": "{font.size.lg}", "$type": "dimension" }
+      }
+    }
+  }
+}

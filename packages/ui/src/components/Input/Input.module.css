@@ -1,0 +1,94 @@
+/*
+  Input — usa tokens semânticos + component tokens.
+  Trocar de marca altera automaticamente as cores.
+*/
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-spacing-1);
+  width: 100%;
+}
+
+.label {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-medium);
+  color: var(--ds-color-text-primary);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  border: var(--ds-component-input-border-width) solid var(--ds-color-border-default);
+  border-radius: var(--ds-component-input-border-radius);
+  font-family: var(--ds-component-input-font-family);
+  font-weight: var(--ds-component-input-font-weight);
+  color: var(--ds-color-text-primary);
+  background: var(--ds-color-background-default);
+  transition: border-color var(--ds-component-input-transition-duration) ease,
+              box-shadow var(--ds-component-input-transition-duration) ease;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--ds-color-text-secondary);
+}
+
+/* ── Tamanhos ─────────────────────────────────────────── */
+
+.sm {
+  height: var(--ds-component-input-sm-height);
+  padding: 0 var(--ds-component-input-sm-padding-x);
+  font-size: var(--ds-component-input-sm-font-size);
+}
+
+.md {
+  height: var(--ds-component-input-md-height);
+  padding: 0 var(--ds-component-input-md-padding-x);
+  font-size: var(--ds-component-input-md-font-size);
+}
+
+.lg {
+  height: var(--ds-component-input-lg-height);
+  padding: 0 var(--ds-component-input-lg-padding-x);
+  font-size: var(--ds-component-input-lg-font-size);
+}
+
+/* ── Estados ──────────────────────────────────────────── */
+
+.input:hover:not(:disabled):not(.error) {
+  border-color: var(--ds-color-action-primary);
+}
+
+.input:focus:not(:disabled) {
+  border-color: var(--ds-color-action-primary);
+  box-shadow: 0 0 0 2px var(--ds-color-action-primary-subtle);
+}
+
+.input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Erro ─────────────────────────────────────────────── */
+
+.input.error {
+  border-color: var(--ds-color-feedback-error);
+}
+
+.input.error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+}
+
+.errorText {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-feedback-error);
+}
+
+.helperText {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-text-secondary);
+}
