@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 420px;
+    }
+    h2 { font-size: 15px; font-weight: 600; }
+    .subtitle { font-size: 12px; color: #888; line-height: 1.5; }
+    .components {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .component-card {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .component-card strong {
+      font-size: 12px;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .component-card span {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.4;
+    }
+    button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      width: 100%;
+      transition: background 0.15s;
+      margin-top: auto;
+    }
+    button:hover:not(:disabled) { background: #4f46e5; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #status {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      min-height: 18px;
+    }
+    #status.success { color: #22c55e; }
+    #status.error   { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <h2>🧩 DS Components Creator</h2>
+  <p class="subtitle">
+    Cria os 4 componentes no canvas usando as Variables do Design System.
+  </p>
+
+  <div class="components">
+    <div class="component-card">
+      <strong>Input / TextField</strong>
+      <span>4 estados: Default, Focus, Error, Disabled</span>
+    </div>
+    <div class="component-card">
+      <strong>Badge</strong>
+      <span>6 tipos: Default, Primary, Success, Warning, Error, Info</span>
+    </div>
+    <div class="component-card">
+      <strong>Card</strong>
+      <span>Com título, corpo, divider e ação</span>
+    </div>
+    <div class="component-card">
+      <strong>Typography Scale</strong>
+      <span>H1→H4, Body L/M/S, Label M/S</span>
+    </div>
+  </div>
+
+  <div id="status"></div>
+
+  <button id="btn" onclick="run()">Criar Componentes no Figma</button>
+
+  <script>
+    function run() {
+      document.getElementById('status').textContent = 'Iniciando...';
+      document.getElementById('status').className = '';
+      document.getElementById('btn').disabled = true;
+      parent.postMessage({ pluginMessage: { type: 'create-all' } }, '*');
+    }
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+      const el = document.getElementById('status');
+      if (msg.type === 'status') {
+        el.textContent = msg.text;
+        el.className = '';
+      } else if (msg.type === 'success') {
+        el.textContent = msg.text;
+        el.className = 'success';
+      } else if (msg.type === 'error') {
+        el.textContent = msg.text;
+        el.className = 'error';
+        document.getElementById('btn').disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>
