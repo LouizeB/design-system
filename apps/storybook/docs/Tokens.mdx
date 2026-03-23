@@ -1,0 +1,108 @@
+{/* apps/storybook/docs/Tokens.mdx */}
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Tokens" />
+
+# Design Tokens
+
+Todos os tokens usam o formato **W3C Design Tokens (DTCG)** com `$value` e `$type`,
+compilados pelo **Style Dictionary v4** para CSS Custom Properties.
+
+## Primitivos (Base)
+
+Valores brutos, iguais em todas as marcas.
+
+### Cores
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--ds-color-neutral-0` | `#ffffff` | Branco |
+| `--ds-color-neutral-50` | `#fafafa` | Surface light |
+| `--ds-color-neutral-100` | `#f5f5f5` | Hover background |
+| `--ds-color-neutral-200` | `#e5e5e5` | Bordas |
+| `--ds-color-neutral-500` | `#737373` | Texto secundário |
+| `--ds-color-neutral-900` | `#171717` | Texto primário |
+| `--ds-color-indigo-500` | `#6366f1` | Brand A primary |
+| `--ds-color-rose-500` | `#f43f5e` | Brand B primary |
+
+### Espaçamento
+
+| Token | Valor |
+|-------|-------|
+| `--ds-spacing-1` | `4px` |
+| `--ds-spacing-2` | `8px` |
+| `--ds-spacing-3` | `12px` |
+| `--ds-spacing-4` | `16px` |
+| `--ds-spacing-6` | `24px` |
+| `--ds-spacing-8` | `32px` |
+
+### Tipografia
+
+| Token | Valor |
+|-------|-------|
+| `--ds-font-family-sans` | `Inter, system-ui, sans-serif` |
+| `--ds-font-family-mono` | `JetBrains Mono, monospace` |
+| `--ds-font-size-sm` | `14px` |
+| `--ds-font-size-md` | `16px` |
+| `--ds-font-size-lg` | `18px` |
+| `--ds-font-weight-regular` | `400` |
+| `--ds-font-weight-medium` | `500` |
+| `--ds-font-weight-semibold` | `600` |
+
+## Tokens Semânticos
+
+Mapeiam **contexto de uso** → valor primitivo. Mudam conforme a marca ativa.
+
+| Token | Brand A (Indigo) | Brand B (Rose) |
+|-------|-----------------|----------------|
+| `--ds-color-action-primary` | `#6366f1` | `#f43f5e` |
+| `--ds-color-action-primary-hover` | `#4f46e5` | `#e11d48` |
+| `--ds-color-background-default` | `#ffffff` | `#ffffff` |
+| `--ds-color-text-primary` | `#171717` | `#171717` |
+| `--ds-color-feedback-success` | `#22c55e` | `#22c55e` |
+| `--ds-color-feedback-error` | `#ef4444` | `#ef4444` |
+
+## Component Tokens
+
+Tokens específicos de cada componente, referenciando primitivos.
+
+### Button
+| Token | Valor |
+|-------|-------|
+| `--ds-component-button-border-radius` | `{radius.md}` → `8px` |
+| `--ds-component-button-font-weight` | `{font.weight.medium}` → `500` |
+| `--ds-component-button-md-height` | `40px` |
+| `--ds-component-button-md-padding-x` | `{spacing.4}` → `16px` |
+
+### Input
+| Token | Valor |
+|-------|-------|
+| `--ds-component-input-border-radius` | `{radius.md}` → `8px` |
+| `--ds-component-input-md-height` | `40px` |
+| `--ds-component-input-md-padding-x` | `{spacing.4}` → `16px` |
+
+## Uso nos Componentes
+
+Componentes **nunca** usam valores hardcoded. Sempre via CSS custom properties:
+
+```css
+/* ✅ Correto */
+.button {
+  border-radius: var(--ds-component-button-border-radius);
+  background: var(--ds-color-action-primary);
+}
+
+/* ❌ Errado */
+.button {
+  border-radius: 8px;
+  background: #6366f1;
+}
+```
+
+## Tokens Studio Sync
+
+Os tokens são compatíveis com **Tokens Studio Git Sync**:
+
+- Formato DTCG (`$value`, `$type`)
+- Referências via `{color.indigo.500}`
+- Arquivos JSON em `packages/tokens/src/`

@@ -1,14 +1,11 @@
-/**
- * DEPRECATED: Storybook config moved to apps/storybook/.storybook/
- * This file is kept for backwards compatibility.
- * Use `pnpm storybook` from root which now runs the apps/storybook app.
- */
 import type { StorybookConfig } from '@storybook/react-vite'
 
 const config: StorybookConfig = {
   stories: [
-    './docs/**/*.mdx',
-    '../packages/ui/src/**/*.stories.@(ts|tsx)',
+    // Documentation pages (MDX)
+    '../docs/**/*.mdx',
+    // Component stories from @ds/ui
+    '../../../packages/ui/src/**/*.stories.@(ts|tsx)',
   ],
 
   addons: [

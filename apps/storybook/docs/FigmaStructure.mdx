@@ -1,0 +1,135 @@
+{/* apps/storybook/docs/FigmaStructure.mdx */}
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Foundations/Figma Structure" />
+
+# Figma Design System — Page Structure
+
+Estrutura recomendada para organizar o arquivo Figma do Design System.
+
+## Estrutura de Páginas
+
+```
+📁 Design System
+├── 📄 Cover
+├── 📄 Getting Started
+├── 📄 Changelog
+│
+├── 📁 Foundations
+│   ├── 📄 Colors
+│   ├── 📄 Typography
+│   ├── 📄 Spacing & Grid
+│   ├── 📄 Radius & Shadows
+│   └── 📄 Iconography
+│
+├── 📁 Tokens
+│   ├── 📄 Primitives
+│   ├── 📄 Semantic Tokens
+│   └── 📄 Component Tokens
+│
+├── 📁 Components
+│   ├── 📄 Button
+│   ├── 📄 Input
+│   ├── 📄 Badge
+│   ├── 📄 Card
+│   └── 📄 ... (novos componentes)
+│
+├── 📁 Patterns
+│   ├── 📄 Forms
+│   ├── 📄 Navigation
+│   └── 📄 Feedback
+│
+└── 📁 Brand Themes
+    ├── 📄 Brand A (Indigo)
+    └── 📄 Brand B (Rose)
+```
+
+## Figma Variables (Collections)
+
+O script `pnpm setup-figma` cria automaticamente as seguintes coleções:
+
+| Coleção | Conteúdo | Modo |
+|---------|----------|------|
+| **Base** | Primitivos: cores, espaçamento, tipografia, radius | Single mode |
+| **Brand A** | Semânticos mapeados para Indigo | Single mode |
+| **Brand B** | Semânticos mapeados para Rose | Single mode |
+
+### Convenção de nomes
+
+Variáveis usam `/` como separador:
+
+```
+color/neutral/500      → Primitivo
+color/action/primary   → Semântico
+spacing/4              → Primitivo
+font/size/md           → Primitivo
+```
+
+## Sync Figma ↔ Code
+
+### Code → Figma
+```bash
+# Cria variables no Figma baseado nos tokens do código
+pnpm setup-figma
+```
+
+### Figma → Code
+```bash
+# Puxa variables do Figma e gera tokens JSON
+pnpm sync-figma
+```
+
+### Tokens Studio (Git Sync)
+
+Os tokens são compatíveis com o plugin **Tokens Studio for Figma**:
+
+1. Configure o Git Sync apontando para `packages/tokens/src/`
+2. O formato DTCG (`$value`, `$type`) é reconhecido automaticamente
+3. Referências como `{color.indigo.500}` são resolvidas pelo plugin
+
+## Estrutura de cada página de componente
+
+Cada componente no Figma deve seguir este layout:
+
+```
+┌─────────────────────────────────────────┐
+│  Component Name                         │
+│  Descrição breve do componente          │
+├─────────────────────────────────────────┤
+│  Anatomy                                │
+│  ┌─────┐ Diagrama com partes do         │
+│  │     │ componente rotuladas           │
+│  └─────┘                                │
+├─────────────────────────────────────────┤
+│  Variants                               │
+│  Primary  Secondary  Ghost              │
+│  ┌─────┐ ┌─────┐   ┌─────┐            │
+│  │     │ │     │   │     │            │
+│  └─────┘ └─────┘   └─────┘            │
+├─────────────────────────────────────────┤
+│  Sizes                                  │
+│  SM    MD    LG                         │
+├─────────────────────────────────────────┤
+│  States                                 │
+│  Default  Hover  Focus  Disabled        │
+├─────────────────────────────────────────┤
+│  Specs                                  │
+│  Spacing, tipografia, cores usadas      │
+├─────────────────────────────────────────┤
+│  Brand Comparison                       │
+│  Brand A vs Brand B lado a lado         │
+└─────────────────────────────────────────┘
+```
+
+## Configuração do .env
+
+```bash
+# Copie .env.example para .env
+cp .env.example .env
+
+# Preencha:
+FIGMA_ACCESS_TOKEN=your_token_here
+FIGMA_FILE_KEY=your_file_key_here
+```
+
+O token de acesso pode ser gerado em: [Figma Settings → Access Tokens](https://www.figma.com/settings)

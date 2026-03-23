@@ -1,0 +1,66 @@
+{/* apps/storybook/docs/Introduction.mdx */}
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Getting Started/Introduction" />
+
+# Design System
+
+Sistema de design multi-marca, escalável e pronto para produção.
+
+## Arquitetura
+
+O projeto é organizado como um **monorepo Turborepo** com os seguintes pacotes:
+
+| Pacote | Descrição |
+|--------|-----------|
+| `@ds/tokens` | Design tokens compilados via Style Dictionary |
+| `@ds/ui` | Biblioteca de componentes React + TypeScript |
+| `@ds/themes` | ThemeProvider e utilitários de troca de marca |
+| `@ds/storybook` | Documentação interativa (esta que você está vendo) |
+
+## Camadas de Tokens
+
+O sistema usa **4 camadas de tokens** com referências entre si:
+
+1. **Primitivos** — Valores brutos: paleta de cores, espaçamento, tipografia, radius
+2. **Semânticos** — Mapeamento por contexto: `background`, `text`, `action`, `border`, `feedback`
+3. **Component Tokens** — Tokens específicos de componentes: `button`, `input`, `badge`, `card`
+4. **Temas** — Override semântico por marca: `brand-a` (Indigo), `brand-b` (Rose)
+
+## Multi-Brand
+
+Troque entre marcas usando o seletor na toolbar acima (ícone 🎨) ou programaticamente:
+
+```html
+<html data-brand="brand-a">  <!-- ou "brand-b" -->
+```
+
+```tsx
+import { ThemeProvider, useTheme } from '@ds/themes'
+
+function App() {
+  return (
+    <ThemeProvider defaultBrand="brand-a">
+      <MyApp />
+    </ThemeProvider>
+  )
+}
+
+function BrandSwitcher() {
+  const { brand, toggleBrand } = useTheme()
+  return <button onClick={toggleBrand}>Marca: {brand}</button>
+}
+```
+
+## Instalação
+
+```bash
+# Instale dependências
+pnpm install
+
+# Build dos tokens
+pnpm build:tokens
+
+# Inicie o Storybook
+pnpm storybook
+```

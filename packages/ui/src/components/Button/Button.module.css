@@ -1,6 +1,6 @@
 /*
-  Button usa apenas tokens SEMÂNTICOS (color.action.*, color.background.*, etc.)
-  e tokens BASE que são iguais em todas as marcas (spacing, radius, font).
+  Button usa tokens SEMÂNTICOS (color.action.*, color.background.*, etc.)
+  e COMPONENT TOKENS (component.button.*) para layout/sizing.
 
   Trocar de marca → muda automaticamente o visual sem alterar o componente.
 */
@@ -10,12 +10,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--ds-spacing-2);
-  border: 1.5px solid transparent;
+  border: var(--ds-component-button-border-width) solid transparent;
   cursor: pointer;
-  font-family: var(--ds-font-family-sans);
-  font-weight: var(--ds-font-weight-medium);
-  border-radius: var(--ds-radius-md);
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  font-family: var(--ds-component-button-font-family);
+  font-weight: var(--ds-component-button-font-weight);
+  border-radius: var(--ds-component-button-border-radius);
+  transition: background var(--ds-component-button-transition-duration) ease,
+              color var(--ds-component-button-transition-duration) ease,
+              border-color var(--ds-component-button-transition-duration) ease;
   white-space: nowrap;
   text-decoration: none;
 }
@@ -23,21 +25,21 @@
 /* ── Tamanhos ─────────────────────────────────────────── */
 
 .sm {
-  height: 32px;
-  padding: 0 var(--ds-spacing-3);
-  font-size: var(--ds-font-size-sm);
+  height: var(--ds-component-button-sm-height);
+  padding: 0 var(--ds-component-button-sm-padding-x);
+  font-size: var(--ds-component-button-sm-font-size);
 }
 
 .md {
-  height: 40px;
-  padding: 0 var(--ds-spacing-4);
-  font-size: var(--ds-font-size-md);
+  height: var(--ds-component-button-md-height);
+  padding: 0 var(--ds-component-button-md-padding-x);
+  font-size: var(--ds-component-button-md-font-size);
 }
 
 .lg {
-  height: 48px;
-  padding: 0 var(--ds-spacing-6);
-  font-size: var(--ds-font-size-lg);
+  height: var(--ds-component-button-lg-height);
+  padding: 0 var(--ds-component-button-lg-padding-x);
+  font-size: var(--ds-component-button-lg-font-size);
 }
 
 /* ── Variantes — todos usam tokens semânticos ─────────── */

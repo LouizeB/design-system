@@ -1,0 +1,12 @@
+{
+  "component": {
+    "badge": {
+      "border-radius": { "$value": "{radius.full}", "$type": "dimension" },
+      "font-family": { "$value": "{font.family.sans}", "$type": "fontFamily" },
+      "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" },
+      "font-size": { "$value": "{font.size.xs}", "$type": "dimension" },
+      "padding-x": { "$value": "{spacing.2}", "$type": "dimension" },
+      "padding-y": { "$value": "2px", "$type": "dimension" }
+    }
+  }
+}

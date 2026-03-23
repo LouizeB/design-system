@@ -1,0 +1,43 @@
+/*
+  Badge — usa tokens semânticos + component tokens.
+  Variantes mapeiam para tokens de feedback.
+*/
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--ds-component-badge-border-radius);
+  font-family: var(--ds-component-badge-font-family);
+  font-weight: var(--ds-component-badge-font-weight);
+  font-size: var(--ds-component-badge-font-size);
+  padding: var(--ds-component-badge-padding-y) var(--ds-component-badge-padding-x);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ── Variantes ────────────────────────────────────────── */
+
+.default {
+  background: var(--ds-color-background-hover);
+  color: var(--ds-color-text-primary);
+}
+
+.success {
+  background: color-mix(in srgb, var(--ds-color-feedback-success) 15%, transparent);
+  color: var(--ds-color-feedback-success);
+}
+
+.warning {
+  background: color-mix(in srgb, var(--ds-color-feedback-warning) 15%, transparent);
+  color: var(--ds-color-feedback-warning);
+}
+
+.error {
+  background: color-mix(in srgb, var(--ds-color-feedback-error) 15%, transparent);
+  color: var(--ds-color-feedback-error);
+}
+
+.info {
+  background: color-mix(in srgb, var(--ds-color-feedback-info) 15%, transparent);
+  color: var(--ds-color-feedback-info);
+}
