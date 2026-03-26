@@ -8,9 +8,12 @@
   },
   "files": ["dist"],
   "exports": {
-    "./base":    "./dist/base.css",
-    "./brand-a": "./dist/brand-a.css",
-    "./brand-b": "./dist/brand-b.css"
+    "./base":      "./dist/base.css",
+    "./brand-a":   "./dist/brand-a.css",
+    "./brand-b":   "./dist/brand-b.css",
+    "./brand-c":   "./dist/brand-c.css",
+    "./brand-d":   "./dist/brand-d.css",
+    "./wireframe": "./dist/wireframe.css"
   },
   "devDependencies": {
     "style-dictionary": "^4.3.0"

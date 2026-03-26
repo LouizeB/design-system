@@ -1,130 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Inter, -apple-system, sans-serif;
-      background: #1e1e1e;
-      color: #ffffff;
+      font-family: Inter, system-ui, sans-serif;
       padding: 24px;
-      height: 340px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      background: #1e1e1e;
+      color: #e0e0e0;
     }
-
-    h2 {
-      font-size: 15px;
+    h1 {
+      font-size: 16px;
       font-weight: 600;
-      color: #fff;
+      margin-bottom: 8px;
     }
-
-    .description {
+    .subtitle {
       font-size: 12px;
       color: #999;
-      line-height: 1.6;
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
-
-    .collections {
+    .brands {
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
-
-    .badge {
-      background: #2a2a2a;
-      border: 1px solid #3a3a3a;
-      border-radius: 6px;
-      padding: 8px 12px;
+    .brand-tag {
       font-size: 11px;
-      flex: 1;
-    }
-
-    .badge strong {
-      display: block;
-      font-size: 12px;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .badge span {
-      color: #888;
-    }
-
-    button {
-      background: #6366f1;
-      color: white;
-      border: none;
-      padding: 11px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 12px;
       font-weight: 500;
-      width: 100%;
-      transition: background 0.15s;
     }
-
-    button:hover:not(:disabled) { background: #4f46e5; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-
+    .wireframe { background: #666; color: #fff; }
+    .ifood { background: #E00C2C; color: #fff; }
+    .verde { background: #228B22; color: #fff; }
+    .azul { background: #0066CC; color: #fff; }
+    .roxo { background: #6A0DAD; color: #fff; }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.85; }
+    .btn-primary {
+      background: #0066CC;
+      color: white;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #999;
+      border: 1px solid #444;
+    }
     #status {
       font-size: 12px;
-      color: #888;
-      min-height: 18px;
-      text-align: center;
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      display: none;
     }
-
-    #status.success { color: #22c55e; }
-    #status.error   { color: #ef4444; }
+    .status-progress { background: #2a2a3a; color: #aab; }
+    .status-success { background: #1a2e1a; color: #6d6; }
+    .status-error { background: #2e1a1a; color: #d66; }
+    .info {
+      font-size: 11px;
+      color: #666;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
-  <h2>🎨 Design System Variables</h2>
-
-  <p class="description">
-    Cria automaticamente as Variable Collections no Figma a partir dos tokens do design system.
+  <h1>Design System White Label</h1>
+  <p class="subtitle">
+    Cria automaticamente as colecoes de variaveis<br>
+    Primitives + Semantic (5 modos)
   </p>
 
-  <div class="collections">
-    <div class="badge">
-      <strong>Primitives</strong>
-      <span>26 cores base<br>(neutral, indigo, rose…)</span>
-    </div>
-    <div class="badge">
-      <strong>Semantic</strong>
-      <span>16 tokens · 2 modos<br>Brand A &amp; Brand B</span>
-    </div>
+  <div class="brands">
+    <span class="brand-tag wireframe">Wireframe</span>
+    <span class="brand-tag ifood">iFood</span>
+    <span class="brand-tag verde">POS Verde</span>
+    <span class="brand-tag azul">POS Azul</span>
+    <span class="brand-tag roxo">POS Roxo</span>
   </div>
 
-  <button id="btn" onclick="run()">Criar Variables no Figma</button>
+  <button class="btn-primary" id="createBtn" onclick="create()">
+    Criar Variables
+  </button>
+  <button class="btn-secondary" onclick="parent.postMessage({pluginMessage: {type: 'close'}}, '*')">
+    Fechar
+  </button>
 
   <div id="status"></div>
 
+  <p class="info">
+    Apos criar, abra Local Variables para ver as colecoes.<br>
+    Na colecao Semantic, alterne entre os modos para trocar de marca.
+  </p>
+
   <script>
-    function run() {
-      document.getElementById('status').textContent = 'Iniciando...';
-      document.getElementById('status').className = '';
-      document.getElementById('btn').disabled = true;
+    function create() {
+      document.getElementById('createBtn').disabled = true;
+      document.getElementById('createBtn').textContent = 'Criando...';
       parent.postMessage({ pluginMessage: { type: 'create-variables' } }, '*');
     }
 
     window.onmessage = (event) => {
       const msg = event.data.pluginMessage;
       if (!msg) return;
-      const statusEl = document.getElementById('status');
+
+      const el = document.getElementById('status');
+      el.style.display = 'block';
+      el.textContent = msg.text;
 
       if (msg.type === 'status') {
-        statusEl.textContent = msg.text;
-        statusEl.className = '';
+        el.className = 'status-progress';
       } else if (msg.type === 'success') {
-        statusEl.textContent = msg.text;
-        statusEl.className = 'success';
+        el.className = 'status-success';
+        document.getElementById('createBtn').textContent = 'Criado!';
       } else if (msg.type === 'error') {
-        statusEl.textContent = msg.text;
-        statusEl.className = 'error';
-        document.getElementById('btn').disabled = false;
+        el.className = 'status-error';
+        document.getElementById('createBtn').disabled = false;
+        document.getElementById('createBtn').textContent = 'Tentar novamente';
       }
     };
   </script>

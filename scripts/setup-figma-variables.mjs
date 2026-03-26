@@ -4,9 +4,10 @@
  *
  * Cria toda a estrutura de Variables no Figma espelhando os tokens do projeto:
  *
- *   Coleção "Base"    → tokens primitivos (paleta de cores, espaçamento, tipografia)
- *   Coleção "Brand A" → tokens semânticos com identidade Indigo
- *   Coleção "Brand B" → tokens semânticos com identidade Rose
+ *   Colecao "Primitives" → tokens primitivos (paleta, wireframe, espacamento, tipografia)
+ *   Colecao "Semantic"   → tokens semanticos com 5 modos:
+ *                           Wireframe, Brand A (iFood), Brand B (POS Verde),
+ *                           Brand C (POS Azul), Brand D (POS Roxo)
  *
  * Uso:
  *   1. Preencha o .env com FIGMA_ACCESS_TOKEN e FIGMA_FILE_KEY
@@ -32,21 +33,21 @@ try {
     if (key && rest.length) process.env[key.trim()] = rest.join('=').trim()
   }
 } catch {
-  // sem .env — usa variáveis de ambiente do sistema
+  // sem .env — usa variaveis de ambiente do sistema
 }
 
 const TOKEN    = process.env.FIGMA_ACCESS_TOKEN
 const FILE_KEY = process.env.FIGMA_FILE_KEY
 
 if (!TOKEN || !FILE_KEY) {
-  console.error('❌  Preencha FIGMA_ACCESS_TOKEN e FIGMA_FILE_KEY no arquivo .env')
-  console.error('   Veja o .env.example para referência.')
+  console.error('Preencha FIGMA_ACCESS_TOKEN e FIGMA_FILE_KEY no arquivo .env')
+  console.error('   Veja o .env.example para referencia.')
   process.exit(1)
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
-/** Converte hex (#rrggbb) para objeto RGBA float (0–1) que a API do Figma usa */
+/** Converte hex (#rrggbb) para objeto RGBA float (0-1) que a API do Figma usa */
 function hex(h) {
   return {
     r: +(parseInt(h.slice(1, 3), 16) / 255).toFixed(5),
@@ -56,23 +57,38 @@ function hex(h) {
   }
 }
 
-/** Cria um valor de alias (referência a outra variable) */
+/** Cria um valor de alias (referencia a outra variable) */
 function alias(tempId) {
   return { type: 'VARIABLE_ALIAS', id: tempId }
 }
 
-// ── IDs temporários das coleções e modos ──────────────────────────────────
-// O Figma resolve os IDs "temp:..." em IDs reais após o request
+// ── IDs temporarios das colecoes e modos ──────────────────────────────────
 
 const COL = {
-  base:    { id: 'temp:col_base',    modeId: 'temp:mode_base',    name: 'Base'    },
-  brand_a: { id: 'temp:col_brand_a', modeId: 'temp:mode_brand_a', name: 'Brand A' },
-  brand_b: { id: 'temp:col_brand_b', modeId: 'temp:mode_brand_b', name: 'Brand B' },
+  primitives: {
+    id: 'temp:col_primitives',
+    modeId: 'temp:mode_primitives',
+    name: 'Primitives',
+  },
+  semantic: {
+    id: 'temp:col_semantic',
+    modeId: 'temp:mode_wireframe',
+    name: 'Semantic',
+  },
 }
 
-// ── Tokens primitivos (Base) ──────────────────────────────────────────────
+// Modos adicionais para a colecao Semantic
+const SEMANTIC_MODES = {
+  wireframe:  'temp:mode_wireframe',
+  brand_a:    'temp:mode_brand_a',
+  brand_b:    'temp:mode_brand_b',
+  brand_c:    'temp:mode_brand_c',
+  brand_d:    'temp:mode_brand_d',
+}
 
-const baseTokens = [
+// ── Tokens primitivos ───────────────────────────────────────────────────
+
+const primitiveTokens = [
   // Neutros
   { id: 'temp:n0',   name: 'color/neutral/0',   type: 'COLOR', value: hex('#ffffff') },
   { id: 'temp:n50',  name: 'color/neutral/50',  type: 'COLOR', value: hex('#fafafa') },
@@ -86,29 +102,49 @@ const baseTokens = [
   { id: 'temp:n800', name: 'color/neutral/800', type: 'COLOR', value: hex('#262626') },
   { id: 'temp:n900', name: 'color/neutral/900', type: 'COLOR', value: hex('#171717') },
 
-  // Indigo
-  { id: 'temp:i50',  name: 'color/indigo/50',  type: 'COLOR', value: hex('#eef2ff') },
-  { id: 'temp:i100', name: 'color/indigo/100', type: 'COLOR', value: hex('#e0e7ff') },
-  { id: 'temp:i400', name: 'color/indigo/400', type: 'COLOR', value: hex('#818cf8') },
-  { id: 'temp:i500', name: 'color/indigo/500', type: 'COLOR', value: hex('#6366f1') },
-  { id: 'temp:i600', name: 'color/indigo/600', type: 'COLOR', value: hex('#4f46e5') },
-  { id: 'temp:i700', name: 'color/indigo/700', type: 'COLOR', value: hex('#4338ca') },
+  // Wireframe grays
+  { id: 'temp:w100', name: 'color/wireframe/100', type: 'COLOR', value: hex('#F2F2F2') },
+  { id: 'temp:w200', name: 'color/wireframe/200', type: 'COLOR', value: hex('#E5E5E5') },
+  { id: 'temp:w300', name: 'color/wireframe/300', type: 'COLOR', value: hex('#CCCCCC') },
+  { id: 'temp:w400', name: 'color/wireframe/400', type: 'COLOR', value: hex('#999999') },
+  { id: 'temp:w500', name: 'color/wireframe/500', type: 'COLOR', value: hex('#666666') },
 
-  // Rose
-  { id: 'temp:r50',  name: 'color/rose/50',  type: 'COLOR', value: hex('#fff1f2') },
-  { id: 'temp:r100', name: 'color/rose/100', type: 'COLOR', value: hex('#ffe4e6') },
-  { id: 'temp:r400', name: 'color/rose/400', type: 'COLOR', value: hex('#fb7185') },
-  { id: 'temp:r500', name: 'color/rose/500', type: 'COLOR', value: hex('#f43f5e') },
-  { id: 'temp:r600', name: 'color/rose/600', type: 'COLOR', value: hex('#e11d48') },
-  { id: 'temp:r700', name: 'color/rose/700', type: 'COLOR', value: hex('#be123c') },
+  // Red (iFood)
+  { id: 'temp:red50',  name: 'color/red/50',  type: 'COLOR', value: hex('#FFF0F0') },
+  { id: 'temp:red500', name: 'color/red/500', type: 'COLOR', value: hex('#E00C2C') },
+  { id: 'temp:red600', name: 'color/red/600', type: 'COLOR', value: hex('#B8091F') },
+
+  // Orange
+  { id: 'temp:orange500', name: 'color/orange/500', type: 'COLOR', value: hex('#FF6B1F') },
+
+  // Green (POS Verde)
+  { id: 'temp:green50',  name: 'color/green/50',  type: 'COLOR', value: hex('#F0FFF0') },
+  { id: 'temp:green500', name: 'color/green/500', type: 'COLOR', value: hex('#228B22') },
+  { id: 'temp:green600', name: 'color/green/600', type: 'COLOR', value: hex('#1A6B1A') },
+
+  // Yellow
+  { id: 'temp:yellow500', name: 'color/yellow/500', type: 'COLOR', value: hex('#FFD700') },
+
+  // Blue (POS Azul)
+  { id: 'temp:blue50',  name: 'color/blue/50',  type: 'COLOR', value: hex('#F0F7FF') },
+  { id: 'temp:blue500', name: 'color/blue/500', type: 'COLOR', value: hex('#0066CC') },
+  { id: 'temp:blue600', name: 'color/blue/600', type: 'COLOR', value: hex('#0052A3') },
+
+  // Amber
+  { id: 'temp:amber500', name: 'color/amber/500', type: 'COLOR', value: hex('#FFCC00') },
+
+  // Purple (POS Roxo)
+  { id: 'temp:purple50',  name: 'color/purple/50',  type: 'COLOR', value: hex('#F5F0FF') },
+  { id: 'temp:purple500', name: 'color/purple/500', type: 'COLOR', value: hex('#6A0DAD') },
+  { id: 'temp:purple600', name: 'color/purple/600', type: 'COLOR', value: hex('#550A8A') },
 
   // Feedback
-  { id: 'temp:green', name: 'color/green/500', type: 'COLOR', value: hex('#22c55e') },
-  { id: 'temp:amber', name: 'color/amber/500', type: 'COLOR', value: hex('#f59e0b') },
-  { id: 'temp:red',   name: 'color/red/500',   type: 'COLOR', value: hex('#ef4444') },
-  { id: 'temp:blue',  name: 'color/blue/500',  type: 'COLOR', value: hex('#3b82f6') },
+  { id: 'temp:fb_success', name: 'color/feedback/success', type: 'COLOR', value: hex('#22C55E') },
+  { id: 'temp:fb_warning', name: 'color/feedback/warning', type: 'COLOR', value: hex('#F59E0B') },
+  { id: 'temp:fb_error',   name: 'color/feedback/error',   type: 'COLOR', value: hex('#EF4444') },
+  { id: 'temp:fb_info',    name: 'color/feedback/info',    type: 'COLOR', value: hex('#3B82F6') },
 
-  // Espaçamento (valores em px sem a unidade)
+  // Espacamento
   { id: 'temp:sp1',  name: 'spacing/1',  type: 'FLOAT', value: 4  },
   { id: 'temp:sp2',  name: 'spacing/2',  type: 'FLOAT', value: 8  },
   { id: 'temp:sp3',  name: 'spacing/3',  type: 'FLOAT', value: 12 },
@@ -127,7 +163,7 @@ const baseTokens = [
   { id: 'temp:radxl',   name: 'radius/xl',   type: 'FLOAT', value: 16   },
   { id: 'temp:radfull', name: 'radius/full', type: 'FLOAT', value: 9999 },
 
-  // Tipografia — famílias
+  // Tipografia — familias
   { id: 'temp:ffsans', name: 'font/family/sans', type: 'STRING', value: 'Inter, system-ui, sans-serif' },
   { id: 'temp:ffmono', name: 'font/family/mono', type: 'STRING', value: 'JetBrains Mono, monospace'   },
 
@@ -153,117 +189,176 @@ const baseTokens = [
   { id: 'temp:lhr', name: 'font/lineHeight/relaxed', type: 'FLOAT', value: 1.75 },
 ]
 
-// ── Tokens semânticos Brand A (Indigo) ────────────────────────────────────
+// ── Tokens semanticos (mapeamento por modo) ──────────────────────────────
 
-const brandATokens = [
-  { name: 'color/action/primary',              ref: 'temp:i500'  },
-  { name: 'color/action/primary-hover',        ref: 'temp:i600'  },
-  { name: 'color/action/primary-subtle',       ref: 'temp:i50'   },
-  { name: 'color/action/primary-foreground',   ref: 'temp:n0'    },
-  { name: 'color/action/secondary-foreground', ref: 'temp:i500'  },
-  { name: 'color/background/default',          ref: 'temp:n0'    },
-  { name: 'color/background/surface',          ref: 'temp:n50'   },
-  { name: 'color/background/hover',            ref: 'temp:n100'  },
-  { name: 'color/text/primary',                ref: 'temp:n900'  },
-  { name: 'color/text/secondary',              ref: 'temp:n500'  },
-  { name: 'color/text/inverse',                ref: 'temp:n0'    },
-  { name: 'color/border/default',              ref: 'temp:n200'  },
-  { name: 'color/feedback/success',            ref: 'temp:green' },
-  { name: 'color/feedback/warning',            ref: 'temp:amber' },
-  { name: 'color/feedback/error',              ref: 'temp:red'   },
-  { name: 'color/feedback/info',               ref: 'temp:blue'  },
-]
-
-// ── Tokens semânticos Brand B (Rose) ──────────────────────────────────────
-
-const brandBTokens = [
-  { name: 'color/action/primary',              ref: 'temp:r500'  },  // ← diferente
-  { name: 'color/action/primary-hover',        ref: 'temp:r600'  },  // ← diferente
-  { name: 'color/action/primary-subtle',       ref: 'temp:r50'   },  // ← diferente
-  { name: 'color/action/primary-foreground',   ref: 'temp:n0'    },
-  { name: 'color/action/secondary-foreground', ref: 'temp:r500'  },  // ← diferente
-  { name: 'color/background/default',          ref: 'temp:n0'    },
-  { name: 'color/background/surface',          ref: 'temp:n50'   },
-  { name: 'color/background/hover',            ref: 'temp:n100'  },
-  { name: 'color/text/primary',                ref: 'temp:n900'  },
-  { name: 'color/text/secondary',              ref: 'temp:n500'  },
-  { name: 'color/text/inverse',                ref: 'temp:n0'    },
-  { name: 'color/border/default',              ref: 'temp:n200'  },
-  { name: 'color/feedback/success',            ref: 'temp:green' },
-  { name: 'color/feedback/warning',            ref: 'temp:amber' },
-  { name: 'color/feedback/error',              ref: 'temp:red'   },
-  { name: 'color/feedback/info',               ref: 'temp:blue'  },
+const semanticTokens = [
+  {
+    name: 'color/action/primary',
+    wireframe: 'temp:w400', brandA: 'temp:red500',    brandB: 'temp:green500',
+    brandC: 'temp:blue500',   brandD: 'temp:purple500',
+  },
+  {
+    name: 'color/action/primary-hover',
+    wireframe: 'temp:w500', brandA: 'temp:red600',    brandB: 'temp:green600',
+    brandC: 'temp:blue600',   brandD: 'temp:purple600',
+  },
+  {
+    name: 'color/action/primary-subtle',
+    wireframe: 'temp:w100', brandA: 'temp:red50',     brandB: 'temp:green50',
+    brandC: 'temp:blue50',    brandD: 'temp:purple50',
+  },
+  {
+    name: 'color/action/primary-foreground',
+    wireframe: 'temp:n0',  brandA: 'temp:n0',        brandB: 'temp:n0',
+    brandC: 'temp:n0',       brandD: 'temp:n0',
+  },
+  {
+    name: 'color/action/secondary-foreground',
+    wireframe: 'temp:w500', brandA: 'temp:red500',    brandB: 'temp:green500',
+    brandC: 'temp:blue500',   brandD: 'temp:purple500',
+  },
+  {
+    name: 'color/background/default',
+    wireframe: 'temp:n0',  brandA: 'temp:n0',        brandB: 'temp:n900',
+    brandC: 'temp:n0',       brandD: 'temp:n900',
+  },
+  {
+    name: 'color/background/surface',
+    wireframe: 'temp:w100', brandA: 'temp:n50',       brandB: 'temp:n800',
+    brandC: 'temp:n50',      brandD: 'temp:n800',
+  },
+  {
+    name: 'color/background/hover',
+    wireframe: 'temp:w200', brandA: 'temp:n100',      brandB: 'temp:n700',
+    brandC: 'temp:n100',     brandD: 'temp:n700',
+  },
+  {
+    name: 'color/text/primary',
+    wireframe: 'temp:w500', brandA: 'temp:n900',      brandB: 'temp:n0',
+    brandC: 'temp:n900',     brandD: 'temp:n0',
+  },
+  {
+    name: 'color/text/secondary',
+    wireframe: 'temp:w400', brandA: 'temp:n500',      brandB: 'temp:n400',
+    brandC: 'temp:n500',     brandD: 'temp:n400',
+  },
+  {
+    name: 'color/text/inverse',
+    wireframe: 'temp:n0',  brandA: 'temp:n0',        brandB: 'temp:n900',
+    brandC: 'temp:n0',       brandD: 'temp:n900',
+  },
+  {
+    name: 'color/border/default',
+    wireframe: 'temp:w200', brandA: 'temp:n200',      brandB: 'temp:n700',
+    brandC: 'temp:n200',     brandD: 'temp:n700',
+  },
+  {
+    name: 'color/feedback/success',
+    wireframe: 'temp:w300', brandA: 'temp:fb_success', brandB: 'temp:fb_success',
+    brandC: 'temp:fb_success', brandD: 'temp:fb_success',
+  },
+  {
+    name: 'color/feedback/warning',
+    wireframe: 'temp:w300', brandA: 'temp:fb_warning', brandB: 'temp:fb_warning',
+    brandC: 'temp:fb_warning', brandD: 'temp:fb_warning',
+  },
+  {
+    name: 'color/feedback/error',
+    wireframe: 'temp:w300', brandA: 'temp:fb_error',   brandB: 'temp:fb_error',
+    brandC: 'temp:fb_error',   brandD: 'temp:fb_error',
+  },
+  {
+    name: 'color/feedback/info',
+    wireframe: 'temp:w300', brandA: 'temp:fb_info',    brandB: 'temp:fb_info',
+    brandC: 'temp:fb_info',    brandD: 'temp:fb_info',
+  },
 ]
 
 // ── Montar payload ─────────────────────────────────────────────────────────
 
-const variableCollections = Object.values(COL).map(c => ({
-  action: 'CREATE',
-  id: c.id,
-  name: c.name,
-  initialModeId: c.modeId,
-}))
+// Colecoes
+const variableCollections = [
+  {
+    action: 'CREATE',
+    id: COL.primitives.id,
+    name: COL.primitives.name,
+    initialModeId: COL.primitives.modeId,
+  },
+  {
+    action: 'CREATE',
+    id: COL.semantic.id,
+    name: COL.semantic.name,
+    initialModeId: SEMANTIC_MODES.wireframe,
+  },
+]
+
+// Modos adicionais para Semantic (wireframe ja e o initialMode)
+const variableModes = [
+  { action: 'CREATE', id: SEMANTIC_MODES.brand_a, name: 'Brand A — iFood',     variableCollectionId: COL.semantic.id },
+  { action: 'CREATE', id: SEMANTIC_MODES.brand_b, name: 'Brand B — POS Verde',  variableCollectionId: COL.semantic.id },
+  { action: 'CREATE', id: SEMANTIC_MODES.brand_c, name: 'Brand C — POS Azul',   variableCollectionId: COL.semantic.id },
+  { action: 'CREATE', id: SEMANTIC_MODES.brand_d, name: 'Brand D — POS Roxo',   variableCollectionId: COL.semantic.id },
+]
+
+// Renomear o modo default para "Wireframe"
+const variableModeUpdates = [
+  { action: 'UPDATE', id: SEMANTIC_MODES.wireframe, name: 'Wireframe', variableCollectionId: COL.semantic.id },
+]
 
 const variables      = []
 const variableValues = []
 
-// Base
-for (const t of baseTokens) {
+// Primitives
+for (const t of primitiveTokens) {
   variables.push({
     action: 'CREATE',
     id: t.id,
     name: t.name,
-    variableCollectionId: COL.base.id,
+    variableCollectionId: COL.primitives.id,
     resolvedType: t.type,
   })
   variableValues.push({
     variableId: t.id,
-    modeId: COL.base.modeId,
+    modeId: COL.primitives.modeId,
     value: t.value,
   })
 }
 
-// Brand A
-for (let i = 0; i < brandATokens.length; i++) {
-  const t = brandATokens[i]
-  const id = `temp:ba_${i}`
-  variables.push({
-    action: 'CREATE',
-    id,
-    name: t.name,
-    variableCollectionId: COL.brand_a.id,
-    resolvedType: 'COLOR',
-  })
-  variableValues.push({
-    variableId: id,
-    modeId: COL.brand_a.modeId,
-    value: alias(t.ref),
-  })
-}
+// Semantic
+for (let i = 0; i < semanticTokens.length; i++) {
+  const t = semanticTokens[i]
+  const id = `temp:sem_${i}`
 
-// Brand B
-for (let i = 0; i < brandBTokens.length; i++) {
-  const t = brandBTokens[i]
-  const id = `temp:bb_${i}`
   variables.push({
     action: 'CREATE',
     id,
     name: t.name,
-    variableCollectionId: COL.brand_b.id,
+    variableCollectionId: COL.semantic.id,
     resolvedType: 'COLOR',
   })
-  variableValues.push({
-    variableId: id,
-    modeId: COL.brand_b.modeId,
-    value: alias(t.ref),
-  })
+
+  // Valor por modo (alias para primitivo)
+  variableValues.push(
+    { variableId: id, modeId: SEMANTIC_MODES.wireframe, value: alias(t.wireframe) },
+    { variableId: id, modeId: SEMANTIC_MODES.brand_a,   value: alias(t.brandA)    },
+    { variableId: id, modeId: SEMANTIC_MODES.brand_b,   value: alias(t.brandB)    },
+    { variableId: id, modeId: SEMANTIC_MODES.brand_c,   value: alias(t.brandC)    },
+    { variableId: id, modeId: SEMANTIC_MODES.brand_d,   value: alias(t.brandD)    },
+  )
 }
 
 // ── Enviar para o Figma ────────────────────────────────────────────────────
 
 const totalVars = variables.length
-console.log(`🎨 Criando ${totalVars} variables em 3 coleções no Figma...`)
-console.log(`   Base: ${baseTokens.length} | Brand A: ${brandATokens.length} | Brand B: ${brandBTokens.length}`)
+console.log(`Criando ${totalVars} variables em 2 colecoes no Figma...`)
+console.log(`   Primitives: ${primitiveTokens.length} | Semantic: ${semanticTokens.length} x 5 modos`)
+
+const payload = {
+  variableCollections,
+  variableModes: [...variableModeUpdates, ...variableModes],
+  variables,
+  variableValues,
+}
 
 const res = await fetch(`https://api.figma.com/v1/files/${FILE_KEY}/variables`, {
   method: 'POST',
@@ -271,17 +366,19 @@ const res = await fetch(`https://api.figma.com/v1/files/${FILE_KEY}/variables`, 
     'X-Figma-Token': TOKEN,
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ variableCollections, variables, variableValues }),
+  body: JSON.stringify(payload),
 })
 
 const result = await res.json()
 
 if (!res.ok || result.error) {
-  console.error('\n❌ Erro da API Figma:')
+  console.error('\nErro da API Figma:')
   console.error(JSON.stringify(result, null, 2))
   process.exit(1)
 }
 
-console.log('\n✅ Variables criadas com sucesso!')
-console.log('   Abra o Figma → Assets (ícone de 4 quadrados) → Local Variables')
-console.log('   Você verá as coleções: Base, Brand A, Brand B\n')
+console.log('\nVariables criadas com sucesso!')
+console.log('   Abra o Figma > Local Variables')
+console.log('   Voce vera as colecoes: Primitives, Semantic')
+console.log('   Na colecao Semantic, alterne entre os modos:')
+console.log('     Wireframe | Brand A (iFood) | Brand B (POS Verde) | Brand C (POS Azul) | Brand D (POS Roxo)\n')
