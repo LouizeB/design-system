@@ -49,11 +49,13 @@
       "500": { "$value": "#6A0DAD", "$type": "color" },
       "600": { "$value": "#550A8A", "$type": "color" }
     },
-    "feedback": {
-      "success": { "$value": "#22C55E", "$type": "color" },
-      "warning": { "$value": "#F59E0B", "$type": "color" },
-      "error":   { "$value": "#EF4444", "$type": "color" },
-      "info":    { "$value": "#3B82F6", "$type": "color" }
+    "palette": {
+      "feedback": {
+        "success": { "$value": "#22C55E", "$type": "color" },
+        "warning": { "$value": "#F59E0B", "$type": "color" },
+        "error":   { "$value": "#EF4444", "$type": "color" },
+        "info":    { "$value": "#3B82F6", "$type": "color" }
+      }
     }
   }
 }

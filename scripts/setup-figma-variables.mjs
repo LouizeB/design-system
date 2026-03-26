@@ -139,10 +139,10 @@ const primitiveTokens = [
   { id: 'temp:purple600', name: 'color/purple/600', type: 'COLOR', value: hex('#550A8A') },
 
   // Feedback
-  { id: 'temp:fb_success', name: 'color/feedback/success', type: 'COLOR', value: hex('#22C55E') },
-  { id: 'temp:fb_warning', name: 'color/feedback/warning', type: 'COLOR', value: hex('#F59E0B') },
-  { id: 'temp:fb_error',   name: 'color/feedback/error',   type: 'COLOR', value: hex('#EF4444') },
-  { id: 'temp:fb_info',    name: 'color/feedback/info',    type: 'COLOR', value: hex('#3B82F6') },
+  { id: 'temp:fb_success', name: 'color/palette/feedback/success', type: 'COLOR', value: hex('#22C55E') },
+  { id: 'temp:fb_warning', name: 'color/palette/feedback/warning', type: 'COLOR', value: hex('#F59E0B') },
+  { id: 'temp:fb_error',   name: 'color/palette/feedback/error',   type: 'COLOR', value: hex('#EF4444') },
+  { id: 'temp:fb_info',    name: 'color/palette/feedback/info',    type: 'COLOR', value: hex('#3B82F6') },
 
   // Espacamento
   { id: 'temp:sp1',  name: 'spacing/1',  type: 'FLOAT', value: 4  },

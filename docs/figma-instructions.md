@@ -104,10 +104,10 @@ Para cada cor, clique em **"+ New variable" > Color** e preencha:
 
 | Nome (copiar) | Valor HEX |
 |---|---|
-| `color/feedback/success` | `#22C55E` |
-| `color/feedback/warning` | `#F59E0B` |
-| `color/feedback/error` | `#EF4444` |
-| `color/feedback/info` | `#3B82F6` |
+| `color/palette/feedback/success` | `#22C55E` |
+| `color/palette/feedback/warning` | `#F59E0B` |
+| `color/palette/feedback/error` | `#EF4444` |
+| `color/palette/feedback/info` | `#3B82F6` |
 
 #### 1.5 Spacing (tipo Number)
 
@@ -278,28 +278,28 @@ Para cada modo/coluna, clique no valor e selecione **"Create alias"** (icone de 
 | Modo | Alias para |
 |---|---|
 | Wireframe | `Primitives > color/wireframe/300` |
-| Demais modos | `Primitives > color/feedback/success` |
+| Demais modos | `Primitives > color/palette/feedback/success` |
 
 **color/feedback/warning**
 
 | Modo | Alias para |
 |---|---|
 | Wireframe | `Primitives > color/wireframe/300` |
-| Demais modos | `Primitives > color/feedback/warning` |
+| Demais modos | `Primitives > color/palette/feedback/warning` |
 
 **color/feedback/error**
 
 | Modo | Alias para |
 |---|---|
 | Wireframe | `Primitives > color/wireframe/300` |
-| Demais modos | `Primitives > color/feedback/error` |
+| Demais modos | `Primitives > color/palette/feedback/error` |
 
 **color/feedback/info**
 
 | Modo | Alias para |
 |---|---|
 | Wireframe | `Primitives > color/wireframe/300` |
-| Demais modos | `Primitives > color/feedback/info` |
+| Demais modos | `Primitives > color/palette/feedback/info` |
 
 ---
 

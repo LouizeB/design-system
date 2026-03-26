@@ -57,10 +57,10 @@ const PRIMITIVES = {
   "color/purple/500": "#6A0DAD",
   "color/purple/600": "#550A8A",
   // Feedback
-  "color/feedback/success": "#22C55E",
-  "color/feedback/warning": "#F59E0B",
-  "color/feedback/error":   "#EF4444",
-  "color/feedback/info":    "#3B82F6"
+  "color/palette/feedback/success": "#22C55E",
+  "color/palette/feedback/warning": "#F59E0B",
+  "color/palette/feedback/error":   "#EF4444",
+  "color/palette/feedback/info":    "#3B82F6"
 };
 
 // ─── TOKENS SEMANTICOS (5 modos) ──────────────────────────────────────
@@ -139,27 +139,27 @@ const SEMANTIC_TOKENS = [
   },
   {
     name: "color/feedback/success",
-    wireframe: "color/wireframe/300", brandA: "color/feedback/success",
-    brandB: "color/feedback/success", brandC: "color/feedback/success",
-    brandD: "color/feedback/success"
+    wireframe: "color/wireframe/300", brandA: "color/palette/feedback/success",
+    brandB: "color/palette/feedback/success", brandC: "color/palette/feedback/success",
+    brandD: "color/palette/feedback/success"
   },
   {
     name: "color/feedback/warning",
-    wireframe: "color/wireframe/300", brandA: "color/feedback/warning",
-    brandB: "color/feedback/warning", brandC: "color/feedback/warning",
-    brandD: "color/feedback/warning"
+    wireframe: "color/wireframe/300", brandA: "color/palette/feedback/warning",
+    brandB: "color/palette/feedback/warning", brandC: "color/palette/feedback/warning",
+    brandD: "color/palette/feedback/warning"
   },
   {
     name: "color/feedback/error",
-    wireframe: "color/wireframe/300", brandA: "color/feedback/error",
-    brandB: "color/feedback/error",   brandC: "color/feedback/error",
-    brandD: "color/feedback/error"
+    wireframe: "color/wireframe/300", brandA: "color/palette/feedback/error",
+    brandB: "color/palette/feedback/error",   brandC: "color/palette/feedback/error",
+    brandD: "color/palette/feedback/error"
   },
   {
     name: "color/feedback/info",
-    wireframe: "color/wireframe/300", brandA: "color/feedback/info",
-    brandB: "color/feedback/info",    brandC: "color/feedback/info",
-    brandD: "color/feedback/info"
+    wireframe: "color/wireframe/300", brandA: "color/palette/feedback/info",
+    brandB: "color/palette/feedback/info",    brandC: "color/palette/feedback/info",
+    brandD: "color/palette/feedback/info"
   }
 ];
 

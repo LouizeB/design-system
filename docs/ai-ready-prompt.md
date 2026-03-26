@@ -78,10 +78,10 @@ Camada 3: Componentes
 
 | Variavel | HEX |
 |---|---|
-| `color/feedback/success` | `#22C55E` |
-| `color/feedback/warning` | `#F59E0B` |
-| `color/feedback/error` | `#EF4444` |
-| `color/feedback/info` | `#3B82F6` |
+| `color/palette/feedback/success` | `#22C55E` |
+| `color/palette/feedback/warning` | `#F59E0B` |
+| `color/palette/feedback/error` | `#EF4444` |
+| `color/palette/feedback/info` | `#3B82F6` |
 
 ### 1.4 Wireframe Grays
 
@@ -167,10 +167,10 @@ Camada 3: Componentes
 | `color/text/secondary` | `wireframe/400` | `neutral/500` | `neutral/400` | `neutral/500` | `neutral/400` |
 | `color/text/inverse` | `neutral/0` | `neutral/0` | `neutral/900` | `neutral/0` | `neutral/900` |
 | `color/border/default` | `wireframe/200` | `neutral/200` | `neutral/700` | `neutral/200` | `neutral/700` |
-| `color/feedback/success` | `wireframe/300` | `feedback/success` | `feedback/success` | `feedback/success` | `feedback/success` |
-| `color/feedback/warning` | `wireframe/300` | `feedback/warning` | `feedback/warning` | `feedback/warning` | `feedback/warning` |
-| `color/feedback/error` | `wireframe/300` | `feedback/error` | `feedback/error` | `feedback/error` | `feedback/error` |
-| `color/feedback/info` | `wireframe/300` | `feedback/info` | `feedback/info` | `feedback/info` | `feedback/info` |
+| `color/feedback/success` | `wireframe/300` | `palette/feedback/success` | `palette/feedback/success` | `palette/feedback/success` | `palette/feedback/success` |
+| `color/feedback/warning` | `wireframe/300` | `palette/feedback/warning` | `palette/feedback/warning` | `palette/feedback/warning` | `palette/feedback/warning` |
+| `color/feedback/error` | `wireframe/300` | `palette/feedback/error` | `palette/feedback/error` | `palette/feedback/error` | `palette/feedback/error` |
+| `color/feedback/info` | `wireframe/300` | `palette/feedback/info` | `palette/feedback/info` | `palette/feedback/info` | `palette/feedback/info` |
 
 ---
 
