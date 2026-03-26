@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 /** Supported brand identifiers — maps to data-brand attribute and CSS token files */
-export type Brand = 'brand-a' | 'brand-b'
+export type Brand = 'brand-a' | 'brand-b' | 'brand-c' | 'brand-d' | 'wireframe'
 
 export interface ThemeContextValue {
   /** Current active brand */
@@ -23,7 +23,7 @@ export interface ThemeProviderProps {
 }
 
 const STORAGE_KEY_DEFAULT = 'ds-brand'
-const BRANDS: Brand[] = ['brand-a', 'brand-b']
+const BRANDS: Brand[] = ['brand-a', 'brand-b', 'brand-c', 'brand-d', 'wireframe']
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
@@ -63,7 +63,9 @@ export const ThemeProvider = ({
   )
 
   const toggleBrand = useCallback(() => {
-    setBrand(brand === 'brand-a' ? 'brand-b' : 'brand-a')
+    const idx = BRANDS.indexOf(brand)
+    const next = BRANDS[(idx + 1) % BRANDS.length]
+    setBrand(next)
   }, [brand, setBrand])
 
   // Sync data-brand attribute on <html>

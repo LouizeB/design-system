@@ -12,8 +12,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
  *    Paleta de cores, espaçamento, tipografia.
  *    Igual para todas as marcas.
  *
- * 2. brand-a.css → tokens semânticos da Brand A (:root + [data-brand="brand-a"])
- *    brand-b.css → tokens semânticos da Brand B ([data-brand="brand-b"])
+ * 2. brand-a.css → Brand A iFood (:root + [data-brand="brand-a"])
+ *    brand-b.css → Brand B POS Verde ([data-brand="brand-b"])
+ *    brand-c.css → Brand C POS Azul ([data-brand="brand-c"])
+ *    brand-d.css → Brand D POS Roxo ([data-brand="brand-d"])
+ *    wireframe.css → Wireframe grayscale ([data-brand="wireframe"])
  *
  * Componentes usam apenas tokens semânticos:
  *    var(--ds-color-action-primary) ← muda por marca
@@ -44,7 +47,7 @@ const sdBase = new StyleDictionary({
 })
 
 await sdBase.buildAllPlatforms()
-console.log('✅  base.css gerado')
+console.log('base.css gerado')
 
 // ── 2. Build por marca ────────────────────────────────────────────────────
 
@@ -85,8 +88,8 @@ for (const brand of BRANDS) {
   })
 
   await sd.buildAllPlatforms()
-  console.log(`✅  ${brand}.css gerado (selector: "${selector}")`)
+  console.log(`${brand}.css gerado (selector: "${selector}")`)
 }
 
-console.log('\n🎨 Tokens multibrand gerados em packages/tokens/dist/')
-console.log('   Uso: <html data-brand="brand-a"> ou <html data-brand="brand-b">')
+console.log('\nTokens multibrand gerados em packages/tokens/dist/')
+console.log('   Uso: <html data-brand="brand-a"> (iFood) | brand-b (POS Verde) | brand-c (POS Azul) | brand-d (POS Roxo) | wireframe')
