@@ -1,4 +1,4 @@
-# Design System — White Label Payment Platform
+# Design System — White Lotus 💮 - Platfm=form White Label
 
 Design system multibrand para plataformas de pagamento, construido com React, Storybook e Style Dictionary.
 O Figma e a unica fonte de verdade — qualquer alteracao de token feita la se propaga automaticamente ate o Storybook e o produto.
